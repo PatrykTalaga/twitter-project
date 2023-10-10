@@ -7,6 +7,7 @@ if(process.env.NODE_ENV !== 'production'){
 const express = require('express')
 const expressLayout = require('express-ejs-layouts')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 
 //app object
 const app = express()
@@ -15,6 +16,7 @@ app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')
 app.use(expressLayout)
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded( { limit: '10mb', extended: false }))
 
 //database
 mongoose.connect(process.env.DATABASE_URL)

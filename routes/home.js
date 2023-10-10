@@ -1,9 +1,46 @@
 const express = require('express')
+const Post = require('../models/post')
 
 const router = express.Router()
+router.get('/', async (req, res) => {
 
-router.get('/', (req, res) => {
-    res.render('home.ejs')
+    let posts
+    try{
+        posts = await Post.find().limit(5).sort({ editedAt: -1 })
+        res.render('home.ejs', { posts: posts })
+    }catch(err){
+        console.error(err)
+    }
 })
+
+router.post('/newPost', async (req, res) => {
+    if(req.body.newPost !== ""){
+        const post = new Post({
+            postText: req.body.newPost
+        })
+        try{
+            await post.save()
+            res.redirect("/")
+            return
+        }catch(err){
+            console.error(err)
+            res.redirect('/')
+            return
+        }
+    }
+    else{
+        res.redirect("/")
+        return
+    }
+})
+
+/* async function savePost(req, newPost){
+    
+    try{
+        await newPost.save()
+    }catch(err){
+        console.error(err)
+    }
+} */
 
 module.exports = router

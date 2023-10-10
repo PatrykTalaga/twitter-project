@@ -1,1 +1,27 @@
-Home
+<div id="home">
+ <div class="new-post">
+        <div class="profile-img"><p>img</p></div>
+        <div>
+            <form action="/newPost" method="POST">
+                <textarea name="newPost" class="text" cols="80" rows="10" placeholder="What is happening"></textarea>
+                <div class="btn-box">
+                    <button class="post-add-btn img">img</button>
+                    <button class="post-add-btn">gif</button>
+                    <button class="post-add-btn">poll</button>
+                    <button class="post-add-btn">emoticon</button>
+                    <button type="submit" class="post-btn">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <% posts.forEach( post => { %>
+            <div class="post">
+                <p class="post-header"><%= post.user %><span class="grey-text"><%= " @" + post.userId %></span></p>
+                <p><%= post.postText %></p>
+                <div class="date-text"><%= "Edited: " + post.editedAt %></div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+<script src="javascript/homeScript.js" defer></script>

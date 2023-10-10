@@ -1,0 +1,112 @@
+:root{
+    --background-color: white;
+    --font-size: 1.25rem;
+    --font-color: black;
+    --font-color-btn: white;
+    --color: rgba(0, 102, 255, 0.932);
+}
+
+/* Default DOM elelement */
+body{
+    font-family: 'Open Sans', sans-serif;
+    font-size: var(--font-size);
+    width: 100vw;
+    /* overflow-x: hidden; */
+    display: flex;
+    justify-content: center;
+    align-items: top;
+}
+
+button{
+    padding: 10px 15px;
+    margin: 5px;
+    border: solid 2px var(--font-color);
+    border-radius: 50px;
+    text-shadow: 0 0 1px black;
+    font-size: var(--font-size);
+    color: var(--font-color-btn);
+    background-color: var(--color);
+}
+
+a{
+    text-decoration: none;
+    font-size: medium;
+    color: var(--font-color);
+}
+.left-side-bar{
+    width: 20%;
+    border-right: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: top;
+    padding: 1% 2%;
+    padding-bottom: auto;
+}
+
+.main{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+}
+
+.new-post{
+    width: 90%;
+    font-family: 'Arimo', sans-serif;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.new-post form{
+    display: grid;
+}
+
+
+.post-btn{
+    margin-left: auto;
+}
+
+.btn-box{
+    display: flex;
+}
+
+.post{
+    font-family: 'Arimo', sans-serif;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 10px 5px;
+    border: solid 1px gainsboro;
+}
+
+.post-header{
+    font-weight: bold;
+}
+
+.grey-text{
+    font-weight: normal;
+    color: gray;
+}
+
+.date-text{
+    font-size: 0.75rem;
+    color: gray;
+}
+
+.post:hover{
+    background-color: gainsboro;
+    transition: .1s linear;
+}
+
+.profile-img{
+    padding: 5px;
+    margin: 5px;
+}
+
+#home{
+    width: 90%;
+}
