@@ -29,9 +29,11 @@ db.once('open', () => {
 })
 
 //routes
+const loginRouter = require('./routes/loginPage')
 const homeRouter = require('./routes/home')
 
-app.use('/', homeRouter)
+app.use('/', loginRouter)
+app.use('/home', homeRouter)
 
 
 //start

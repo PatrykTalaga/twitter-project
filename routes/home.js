@@ -2,6 +2,7 @@ const express = require('express')
 const Post = require('../models/post')
 
 const router = express.Router()
+
 router.get('/', async (req, res) => {
 
     let posts
@@ -20,27 +21,18 @@ router.post('/newPost', async (req, res) => {
         })
         try{
             await post.save()
-            res.redirect("/")
+            res.redirect("/home")
             return
         }catch(err){
             console.error(err)
-            res.redirect('/')
+            res.redirect('/home')
             return
         }
     }
     else{
-        res.redirect("/")
+        res.redirect("/home")
         return
     }
 })
-
-/* async function savePost(req, newPost){
-    
-    try{
-        await newPost.save()
-    }catch(err){
-        console.error(err)
-    }
-} */
 
 module.exports = router

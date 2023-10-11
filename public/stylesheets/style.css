@@ -63,6 +63,7 @@ a{
 
 .new-post form{
     display: grid;
+    margin: 5px;
 }
 
 
