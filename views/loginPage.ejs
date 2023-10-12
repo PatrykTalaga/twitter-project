@@ -1,5 +1,6 @@
+<%- include('./layouts/partials/genericErrorMessage.ejs') %>
 <form action="/" method="POST">
-    <input type="text" name="username" placeholder="Username">
+    <input type="text" name="username" placeholder="Username" value="<%= locals.username %>">
     <input type="password" name="password" placeholder="password">
     <button type="submit">Log In</button>
 </form>

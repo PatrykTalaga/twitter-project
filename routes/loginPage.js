@@ -11,8 +11,11 @@ router.route('/')
     .post(async (req, res) => {
         const user = await User.findOne({ username : req.body.username})
         if(user == null){
-            console.log('there is no such user')
-            return res.status(400).send('There is no such user')
+            console.log('Username is incorrect')
+            return res.status(400).render('loginPage.ejs', {
+                errorMessage: 'Username is incorrect',
+                username: req.body.username }
+            )
         }
         try{
             if(await bcrypt.compare(req.body.password, user.password)){
