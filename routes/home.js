@@ -4,7 +4,6 @@ const Post = require('../models/post')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-
     let posts
     try{
         posts = await Post.find().limit(5).sort({ editedAt: -1 })
