@@ -26,7 +26,8 @@ router.route('/')
         }
         try{
             if(await bcrypt.compare(req.body.password, user.password)){
-                const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_JWT)
+                const jUser = user.toJSON()
+                const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT)
                 //res.json({ accessToken : accessToken})
                 /* res.cookie('accessToken', accessToken)
                 res.redirect('/home') */
@@ -35,7 +36,9 @@ router.route('/')
                 res.cookie("accessToken", accessToken).redirect('/home')
             }
             else{
-                res.send('Wrong Password')
+                return res.status(400).render('loginPage.ejs', {
+                    errorMessage: 'Password is incorrect',
+                    username: req.body.username })
             }
         }
         catch(err){
@@ -56,10 +59,19 @@ router.route('/newUser')
     .post(async (req, res) => {
 
         //Check if email or username is already in database
-        if(await User.countDocuments({username: req.body.username}) !== 0 ||
-        await User.countDocuments({email: req.body.email}) !== 0) {
-            res.send("UserEXists")
-            return
+        if(await User.countDocuments({username: req.body.username}) !== 0){
+            return res.status(400).render('newUser.ejs', {
+                errorMessage: 'This username is already registered',
+                username: req.body.username,
+                password: req.body.password,
+                email: req.body.email })
+        }
+        if(await User.countDocuments({email: req.body.email}) !== 0) {
+            return res.status(400).render('newUser.ejs', {
+                errorMessage: 'This e-mail is already registered',
+                username: req.body.username,
+                password: req.body.password,
+                email: req.body.email })
         }
 
         //hash password
@@ -78,13 +90,23 @@ router.route('/newUser')
 
             try{
                 await user.save()
-                res.send("New User Saved")
-            }catch(err){
-                console.error(err)
-            }
-        }catch(err){
-            console.error(err)
-        }
-    })
+//****Start of: Auto-Login - no checks becouse this data was just added to database**********//
+                const jUser = user.toJSON()
+                const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT)
+                //res.json({ accessToken : accessToken})
+                /* res.cookie('accessToken', accessToken)
+                res.redirect('/home') */
+                /* res.set({accessToken: accessToken});
+                res.redirect('/home') */
+                res.cookie("accessToken", accessToken).redirect('/home')
+//******End of: Auto-Login - no checks becouse this data was just added to database**********//
+                }catch(err){ //save to database
+                    console.error(err)
+                    res.redirect('/')
+                }
+    }catch(err){ //bcrypt hash password
+        console.error(err)
+    }
+})
 
 module.exports = router

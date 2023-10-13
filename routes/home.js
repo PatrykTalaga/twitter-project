@@ -23,7 +23,8 @@ router.post('/newPost', authenticateToken, async (req, res) => {
         console.log('/newPost:' + req.user)
         const post = new Post({
             postText: req.body.newPost,
-            user: req.user
+            user: req.user.username,
+            userId: req.user._id
         })
         try{
             await post.save()
