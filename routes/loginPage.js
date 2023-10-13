@@ -1,8 +1,15 @@
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config()
+}
 const express = require('express')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+
 
 const router = express.Router()
+
 
 router.route('/')
     .get((req, res) => {
@@ -19,7 +26,13 @@ router.route('/')
         }
         try{
             if(await bcrypt.compare(req.body.password, user.password)){
-                res.send('Successful login')
+                const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_JWT)
+                //res.json({ accessToken : accessToken})
+                /* res.cookie('accessToken', accessToken)
+                res.redirect('/home') */
+                /* res.set({accessToken: accessToken});
+                res.redirect('/home') */
+                res.cookie("accessToken", accessToken).redirect('/home')
             }
             else{
                 res.send('Wrong Password')
