@@ -1,0 +1,16 @@
+<div class="new-post">
+    <div class="profile-img"><p>img</p></div>
+    <div>
+        <form action="/home/editPost/<%= post._id %>" method="POST">
+            <textarea name="editPost" class="text" cols="80" rows="10"><%= post.postText %></textarea>
+            <div class="btn-box">
+                <button class="post-add-btn img">img</button>
+                <button class="post-add-btn">gif</button>
+                <button class="post-add-btn">poll</button>
+                <button class="post-add-btn">emoticon</button>
+                <button type="submit" class="post-btn">Post</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="javascript/newPostScript.js" defer></script>

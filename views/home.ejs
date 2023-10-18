@@ -1,5 +1,5 @@
 <div id="home">
- <div class="new-post">
+    <div class="new-post">
         <div class="profile-img"><p>img</p></div>
         <div>
             <form action="/home/newPost" method="POST">
@@ -20,6 +20,11 @@
                 <p class="post-header"><%= post.user %><span class="grey-text"><%= " @" + post.userId %></span></p>
                 <p><%= post.postText %></p>
                 <div class="date-text"><%= "Edited: " + post.editedAt %></div>
+                <% if(post.userId == userId){ %>
+                    <form action="/home/editPost/<%= post._id %>" method="GET">
+                        <button type="submit">Edit</button>
+                    </form>
+                <% } %>
             </div>
         <% }) %>
     </div>

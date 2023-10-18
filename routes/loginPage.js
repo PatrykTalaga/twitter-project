@@ -6,7 +6,10 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+const RefreshToken = require('../models/refreshToken')
 
+const accessTime = '5min'
+const refreshTime = '3h'
 
 const router = express.Router()
 
@@ -25,15 +28,26 @@ router.route('/')
             )
         }
         try{
-            if(await bcrypt.compare(req.body.password, user.password)){
-                const jUser = user.toJSON()
-                const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT)
-                //res.json({ accessToken : accessToken})
-                /* res.cookie('accessToken', accessToken)
-                res.redirect('/home') */
-                /* res.set({accessToken: accessToken});
-                res.redirect('/home') */
-                res.cookie("accessToken", accessToken).redirect('/home')
+            if(bcrypt.compare(req.body.password, user.password)){
+                const jUser = user.toJSON() //jwt.sign needs json, not mongoose object
+                delete jUser.password //remove password (don't add it to jwt)
+                const refreshToken = jwt.sign(jUser, process.env.REFRESH_TOKEN_JWT, {expiresIn: refreshTime})
+                const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT, {expiresIn: accessTime})
+
+                //Save refresh token to DB
+                if(await RefreshToken.countDocuments({user: req.body.username}) !== 0){
+                    await RefreshToken.findOneAndUpdate({user: req.body.username}, {refreshToken: refreshToken})
+
+                }else{
+                    const refreshTokenDB = new RefreshToken({
+                        user: user.username,
+                        refreshToken: refreshToken
+                    })
+                    await refreshTokenDB.save()
+                }
+                ///
+
+                res.cookie("accessToken", accessToken).cookie("refreshToken", refreshToken).redirect('/home')
             }
             else{
                 return res.status(400).render('loginPage.ejs', {
@@ -57,7 +71,6 @@ router.route('/newUser')
         res.render('newUser.ejs')
     })
     .post(async (req, res) => {
-
         //Check if email or username is already in database
         if(await User.countDocuments({username: req.body.username}) !== 0){
             return res.status(400).render('newUser.ejs', {
@@ -76,9 +89,6 @@ router.route('/newUser')
 
         //hash password
         try{
-            /* const salt = await bcrypt.genSalt()
-            const hashedPassword = await bcrypt.hash(req.body.password, salt) */
-            //you dont have to generate salt manually, 10 at the end means generate salt with 10 rounds (10 is default)
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
             const user = new User({
@@ -90,14 +100,9 @@ router.route('/newUser')
 
             try{
                 await user.save()
-//****Start of: Auto-Login - no checks becouse this data was just added to database**********//
+//****Start of: Auto-Login - no checks because this data was just added to database**********//
                 const jUser = user.toJSON()
                 const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT)
-                //res.json({ accessToken : accessToken})
-                /* res.cookie('accessToken', accessToken)
-                res.redirect('/home') */
-                /* res.set({accessToken: accessToken});
-                res.redirect('/home') */
                 res.cookie("accessToken", accessToken).redirect('/home')
 //******End of: Auto-Login - no checks becouse this data was just added to database**********//
                 }catch(err){ //save to database
