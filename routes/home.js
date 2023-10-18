@@ -82,4 +82,14 @@ router.route('/editPost/:id')
         }
     })
 
+router.delete('/deletePost/:id', async (req, res) => {
+    try{
+        const id = req.params.id
+        await Post.deleteOne({ _id: id })
+        res.redirect('/home')
+    }catch(err){
+        console.error(err)
+    }
+})
+
 module.exports = router
