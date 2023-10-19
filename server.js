@@ -27,6 +27,7 @@ app.use(express.json()) //so app can use json passed from body
 app.use(cookieParser())
 app.use(methodOverride('_method'))
 
+
 //database
 mongoose.connect(process.env.DATABASE_URL)
 const db = mongoose.connection
