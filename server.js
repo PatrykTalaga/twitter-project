@@ -41,9 +41,11 @@ db.once('open', () => {
 //routes
 const loginRouter = require('./routes/loginPage')
 const homeRouter = require('./routes/home')
+const loadPostsAPI = require('./routes/API/loadPosts')
 
 app.use('/', loginRouter)
 app.use('/home', authenticateToken, homeRouter)
+app.use('/API', loadPostsAPI)
 
 //start
 app.listen(process.env.PORT || 3000)
