@@ -5,6 +5,7 @@ const express = require('express')
 const Post = require('../models/post')
 
 //image upload
+const fs = require('fs')
 const path = require('path') //built-in library
 const multer = require('multer')
 const { type } = require('os')
@@ -47,38 +48,38 @@ router.get('/', async (req, res) => {
 router.post('/newPost', upload.single('postImage'), async (req, res) => {
 
     const imageName = req.file != null ? req.file.filename : null
-    console.log("imageName: " + imageName)
-    const imagePath = path.join('public/uploads/postImages', imageName)
-   /*  console.log(" ")
-    console.log(" ")
-    console.log("imagePath " + imagePath)
-    console.log(" ")
-    console.log(" ") */
+    let imagePath
+    if(imageName != null){
+        imagePath = path.join('public/uploads/postImages', imageName)
+    }
 
     if(req.body.newPost !== ""){
         if(req.user == undefined){
             return
         }
 
-        const post = new Post({
+        let post = new Post({
             postText: req.body.newPost,
             user: req.user.username,
             userId: req.user._id,
-            postImageName: imageName,
             //if you not add them here they will default with to the date 
             //you opend page/required model
             createdAt: new Date(),
             editedAt: new Date()
         })
+        if(imageName != null) post.postImageName = imageName
+
         try{
             await post.save()
             return res.redirect("/home")
         }catch(err){
             console.error(err)
+            deleteFile(imagePath)
             return res.redirect('/home')
         }
     }
     else{
+        deleteFile(imagePath)
         return res.redirect("/home")
     }
 })
@@ -88,20 +89,28 @@ router.route('/editPost/:id')
         const id = req.params.id
         try{
             const post = await Post.findOne({ _id: id })
-
             res.render('editPost.ejs', { post : post })
         }catch(err){
             console.error(err)
         }
         
     })
-    .post(async (req, res) => {
+    .post(upload.single('postImage'), async (req, res) => {
+        const imageName = req.file != null ? req.file.filename : null
         const id = req.params.id
+
         if(req.body.editPost !== ""){
             try{
                 let post = await Post.findOne({ _id: id })
                 post.postText = req.body.editPost
                 post.editedAt = new Date()
+                //delete old image if new is sent
+                const deleteImagePath = post.imagePath
+                if(imageName != null){
+                    if(deleteImagePath != null) deleteFile(deleteImagePath)
+                    post.postImageName = imageName
+                }
+
                 await post.save()
                 return res.redirect("/home")
             }catch(err){
@@ -123,5 +132,12 @@ router.delete('/deletePost/:id', async (req, res) => {
         console.error(err)
     }
 })
+
+function deleteFile(imagePath){
+    fs.unlink(imagePath, function (err) {
+        if (err) throw err
+        console.log('File deleted!')
+      })
+}
 
 module.exports = router
