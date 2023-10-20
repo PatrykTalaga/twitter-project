@@ -1,10 +1,9 @@
 
-POST http://localhost:3000/
+GET  http://localhost:3000/API/loadPosts/2/1/{}
 Content-Type: application/json
 
 {
-    username: alf123
-    password: alf123
+
 }
 
 ###
