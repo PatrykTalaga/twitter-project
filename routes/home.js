@@ -36,13 +36,14 @@ const upload = multer({ storage: storage })
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    let posts
+    res.render('home.ejs', { userId: req.user._id })
+    /* let posts
     try{
         posts = await Post.find().limit(5).sort({ editedAt: -1 })
         res.render('home.ejs', { posts: posts, userId: req.user._id })
     }catch(err){
         console.error(err)
-    }
+    } */
 })
 
 router.post('/newPost', upload.single('postImage'), async (req, res) => {
@@ -98,7 +99,6 @@ router.route('/editPost/:id')
     .post(upload.single('postImage'), async (req, res) => {
         const imageName = req.file != null ? req.file.filename : null
         const id = req.params.id
-
         if(req.body.editPost !== ""){
             try{
                 let post = await Post.findOne({ _id: id })

@@ -3,6 +3,7 @@ const path = require('path')
 
 const postImageBasePath = 'uploads/postImages'
 
+const opts = { toJSON: { virtuals: true } }
 const postsSchema = new mongoose.Schema({
     user: {
         type: String,
@@ -29,7 +30,7 @@ const postsSchema = new mongoose.Schema({
         type: Date,
         default: new Date()
     }
-})
+}, opts)
 
 postsSchema.virtual('postImagePath').get(function(){
     if(this.postImageName != null){

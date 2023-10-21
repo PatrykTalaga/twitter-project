@@ -15,28 +15,7 @@
             </form>
         </div>
     </div>
+    <div id="post-box"></div>
     <button id="loadPostsBtn">More posts</button>
-    <div>
-        <% posts.forEach( post => { %>
-            <div class="post">
-                <p class="post-header"><%= post.user %><span class="grey-text"><%= " @" + post.userId %></span></p>
-                <p><%= post.postText %></p>
-                <div class="date-text"><%= "Edited: " + post.editedAt %></div>
-
-                <% if(post.postImagePath != null){ %>
-                    <img src="<%= post.postImagePath %>" width="500" height="600">
-                <% } %>
-
-                <% if(post.userId == userId){ %>
-                    <form action="/home/editPost/<%= post._id %>" method="GET">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form method="POST" action="/home/deletePost/<%= post._id %>?_method=DELETE" >
-                        <button type="submit">Delete</button>
-                    </form>
-                <% } %>
-            </div>
-        <% }) %>
-    </div>
 </div>
 <script src="javascript/newPostScript.js" defer></script>

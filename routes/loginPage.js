@@ -46,8 +46,7 @@ router.route('/')
                     await refreshTokenDB.save()
                 }
                 ///
-
-                res.cookie("accessToken", accessToken).cookie("refreshToken", refreshToken).redirect('/home')
+                res.cookie("accessToken", accessToken).cookie("refreshToken", refreshToken).cookie("userId", jUser._id.toJSON()).redirect('/home')
             }
             else{
                 return res.status(400).render('loginPage.ejs', {
@@ -62,9 +61,9 @@ router.route('/')
         
     })
 
-router.get('/noLogin',  (req, res) => {
+/* router.get('/noLogin',  (req, res) => {
     res.redirect('/home')
-})
+}) */
 
 router.route('/newUser')
     .get((req, res) => {
