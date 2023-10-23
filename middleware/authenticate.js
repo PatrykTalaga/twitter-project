@@ -14,10 +14,9 @@ async function  authenticateToken (req, res, next){
             //is in database - there was no log out
             const refreshToken = req.cookies.refreshToken
             if(refreshToken == null) return res.sendStatus('401')
-            const userName = await User.findOne({_id: req.cookies.userId})
-            if( await RefreshToken.countDocuments({user: userName.username}) == 0) return res.redirect('/')
+            const userDb = await User.findOne({_id: req.cookies.userId})
+            if( await RefreshToken.countDocuments({user: userDb.username}) == 0) return res.redirect('/')
                 jwt.verify(refreshToken, process.env.REFRESH_TOKEN_JWT, async (err, user) => {
-                    const userDb = await User.findOne({ username : user.username})
                     let jUser = userDb.toJSON() //jwt.sign needs json, not mongoose object
                     delete jUser.password //remove password (you don't wat to add it to jwt)
                     const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT, {expiresIn: accessTime})
