@@ -10,10 +10,6 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const methodOverride = require('method-override')
-const jwt = require('jsonwebtoken')
-//modules//
-const RefreshToken = require('./models/refreshToken')
-const user = require('./models/user')
 
 //app object
 const app = express()
@@ -37,45 +33,21 @@ db.once('open', () => {
     console.log("Connected to Mongoose")
 })
 
+//middleware//
+const authenticateToken = require('./middleware/authenticate')
+
 //routes
 const loginRouter = require('./routes/loginPage')
 const homeRouter = require('./routes/home')
 const loadPostsAPI = require('./routes/API/loadPosts')
+const logout = require('./routes/logout')
+const settings = require('./routes/settings')
 
 app.use('/', loginRouter)
 app.use('/home', authenticateToken, homeRouter)
 app.use('/API', loadPostsAPI)
+app.use('/logout', logout)
+app.use('/settings', authenticateToken, settings)
 
 //start//
 app.listen(process.env.PORT || 3000)
-
-
-//middleware//
-async function  authenticateToken (req, res, next){
-    const token = req.cookies.accessToken
-    if(token == null) return res.sendStatus('401')
-    jwt.verify(token, process.env.ACCESS_TOKEN_JWT, (err, user) => {
-        if(err){
-            refreshToken(req, res)
-            next()
-        }else{
-            req.user = user
-            next()
-        }
-      })
-    }
-
-//functions//
-async function refreshToken (req, res){
-    const refreshToken = req.cookies.refreshToken
-    if(refreshToken == null) return res.sendStatus('401')
-    if(RefreshToken.countDocuments({refreshToken: user.refreshToken})!== 0){
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_JWT, (err, user) => {
-            if(err) return res.sendStatus(403)
-            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_JWT)
-            res.cookie("accessToken", accessToken)
-            req.user = user
-            return true
-          })
-    }else{return false}
-}

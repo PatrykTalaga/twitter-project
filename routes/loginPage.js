@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 const RefreshToken = require('../models/refreshToken')
 
 //variables//
-const accessTime = '5min'
+const accessTime = '2s'
 const refreshTime = '3h'
 
 //router//
@@ -47,7 +47,7 @@ router.route('/')
                     await refreshTokenDB.save()
                 }
                 //Send both tokens back as cookies, as well as username (necessary in loadPostsScript.js)
-                res.cookie("accessToken", accessToken).cookie("refreshToken", refreshToken).cookie("userId", jUser._id.toJSON()).redirect('/home')
+                res.cookie("accessToken", accessToken, {overwrite: true}).cookie("refreshToken", refreshToken, {overwrite: true}).cookie("userId", jUser._id.toJSON()).redirect('/home')
             }
             else{
                 return res.status(400).render('loginPage.ejs', {
@@ -110,4 +110,6 @@ router.route('/newUser')
     }
 })
 
+//exports//
 module.exports = router
+module.exports.accessTime = accessTime

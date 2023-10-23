@@ -9,6 +9,9 @@ const multer = require('multer')
 //modules//
 const Post = require('../models/post')
 
+//middleware//
+const authenticateToken = require('../middleware/authenticate')
+
 //Multer + rename file
 const uploadPath = path.join('public', Post.postImageBasePath)
 const storage = multer.diskStorage({
@@ -24,11 +27,11 @@ const upload = multer({ storage: storage })
 //Router//
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     res.render('home.ejs', { userId: req.user._id })
 })
 
-router.post('/newPost', upload.single('postImage'), async (req, res) => {
+router.post('/newPost', authenticateToken, upload.single('postImage'), async (req, res) => {
     //Check if image was uploaded and create path to the image on server
     const imageName = req.file != null ? req.file.filename : null
     let imagePath
@@ -71,7 +74,7 @@ router.post('/newPost', upload.single('postImage'), async (req, res) => {
 })
 
 router.route('/editPost/:id')
-    .get(async (req, res) => {
+    .get(authenticateToken, async (req, res) => {
         const id = req.params.id
         try{
             const post = await Post.findOne({ _id: id })
@@ -81,7 +84,7 @@ router.route('/editPost/:id')
         }
         
     })
-    .post(upload.single('postImage'), async (req, res) => {
+    .post(authenticateToken, upload.single('postImage'), async (req, res) => {
         const imageName = req.file != null ? req.file.filename : null
         const id = req.params.id
         if(req.body.editPost !== ""){
@@ -109,7 +112,7 @@ router.route('/editPost/:id')
         }
     })
 
-router.delete('/deletePost/:id', async (req, res) => {
+router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
     try{
         const id = req.params.id
         await Post.deleteOne({ _id: id })
