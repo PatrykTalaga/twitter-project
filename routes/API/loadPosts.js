@@ -3,6 +3,7 @@ const Post = require('../../models/post')
 
 const router = express.Router()
 
+
 //Find posts with declared filter, limit, skip and the sent them back as JSON
 router.get('/loadPosts/:limit/:skip/:filter', async (req, res) => {
     const limit = req.params.limit
