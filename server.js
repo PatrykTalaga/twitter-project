@@ -1,18 +1,18 @@
-//env
+//env//
 if(process.env.NODE_ENV !== 'production'){
     require('dotenv').config()
 }
 
-//libriaries
+//libriaries//
 const express = require('express')
 const expressLayout = require('express-ejs-layouts')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const methodOverride = require('method-override')
-//for  auth middleware
-const RefreshToken = require('./models/refreshToken')
 const jwt = require('jsonwebtoken')
+//modules//
+const RefreshToken = require('./models/refreshToken')
 const user = require('./models/user')
 
 //app object
@@ -23,10 +23,9 @@ app.set('layout', 'layouts/layout')
 app.use(expressLayout)
 app.use(express.static(__dirname +'/public'))
 app.use(bodyParser.urlencoded( { limit: '10mb', extended: false }))
-app.use(express.json()) //so app can use json passed from body
+app.use(express.json())
 app.use(cookieParser())
 app.use(methodOverride('_method'))
-
 
 //database
 mongoose.connect(process.env.DATABASE_URL)
@@ -47,10 +46,11 @@ app.use('/', loginRouter)
 app.use('/home', authenticateToken, homeRouter)
 app.use('/API', loadPostsAPI)
 
-//start
+//start//
 app.listen(process.env.PORT || 3000)
 
-//middleware
+
+//middleware//
 async function  authenticateToken (req, res, next){
     const token = req.cookies.accessToken
     if(token == null) return res.sendStatus('401')
@@ -65,6 +65,7 @@ async function  authenticateToken (req, res, next){
       })
     }
 
+//functions//
 async function refreshToken (req, res){
     const refreshToken = req.cookies.refreshToken
     if(refreshToken == null) return res.sendStatus('401')

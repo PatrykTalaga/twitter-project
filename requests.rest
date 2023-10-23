@@ -1,6 +1,8 @@
 
-GET http://localhost:3000/API/loadPosts/3/1/{}
-Content-Type: application/json/
+
+GET  http://localhost:3000/API/loadPosts/3/1/{}
+Content-Type: application/json
+
 
 {
 
