@@ -1,18 +1,16 @@
 if(process.env.NODE_ENV !== 'production'){
     require('dotenv').config()
 }
+//libriaries//
 const express = require('express')
+const fs = require('fs')
+const path = require('path')
+const multer = require('multer')
+//modules//
 const Post = require('../models/post')
 
-//image upload
-const fs = require('fs')
-const path = require('path') //built-in library
-const multer = require('multer')
-const { type } = require('os')
+//Multer + rename file
 const uploadPath = path.join('public', Post.postImageBasePath)
-const imageMimeTypes = ['images/jpeg', 'images/png', 'images/gif']
-/* console.log("uploadPath type: " + typeof(uploadPath)) */
-
 const storage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, uploadPath)
@@ -21,40 +19,26 @@ const storage = multer.diskStorage({
         callback(null, req.user._id + '-' + Date.now() + path.extname(file.originalname))
         }
 })
-//callback(null,  file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-
 const upload = multer({ storage: storage })
 
-/* const upload = multer({
-    dest: uploadPath,
-    fileFilter: (req, file, callback) => {
-        callback(null, imageMimeTypes.includes(file.mimetype))
-    }
-}) */
-
-
+//Router//
 const router = express.Router()
 
 router.get('/', async (req, res) => {
     res.render('home.ejs', { userId: req.user._id })
-    /* let posts
-    try{
-        posts = await Post.find().limit(5).sort({ editedAt: -1 })
-        res.render('home.ejs', { posts: posts, userId: req.user._id })
-    }catch(err){
-        console.error(err)
-    } */
 })
 
 router.post('/newPost', upload.single('postImage'), async (req, res) => {
-
+    //Check if image was uploaded and create path to the image on server
     const imageName = req.file != null ? req.file.filename : null
     let imagePath
     if(imageName != null){
         imagePath = path.join('public/uploads/postImages', imageName)
     }
 
+    //Save post to database if textarea was not empty
     if(req.body.newPost !== ""){
+        //quick fix to not block server if authentication middleware fails
         if(req.user == undefined){
             return
         }
@@ -63,11 +47,10 @@ router.post('/newPost', upload.single('postImage'), async (req, res) => {
             postText: req.body.newPost,
             user: req.user.username,
             userId: req.user._id,
-            //if you not add them here they will default with to the date 
-            //you opend page/required model
-            createdAt: new Date(),
-            editedAt: new Date()
+            createdAt: new Date(), //if you not add date here it will default to the date 
+            editedAt: new Date()  //you opend page/required model, not the date you saved post
         })
+        //add postImageName only if image was uploaded
         if(imageName != null) post.postImageName = imageName
 
         try{
@@ -75,11 +58,13 @@ router.post('/newPost', upload.single('postImage'), async (req, res) => {
             return res.redirect("/home")
         }catch(err){
             console.error(err)
+            //Delete image from server if post was not saved in database
             deleteFile(imagePath)
             return res.redirect('/home')
         }
     }
     else{
+        //Delete image from server if textarea was empty (there is no post to save)
         deleteFile(imagePath)
         return res.redirect("/home")
     }
@@ -104,6 +89,7 @@ router.route('/editPost/:id')
                 let post = await Post.findOne({ _id: id })
                 post.postText = req.body.editPost
                 post.editedAt = new Date()
+
                 //delete old image if new is sent
                 const deleteImagePath = post.imagePath
                 if(imageName != null){
@@ -133,6 +119,8 @@ router.delete('/deletePost/:id', async (req, res) => {
     }
 })
 
+//functions//
+//remove image file from server
 function deleteFile(imagePath){
     fs.unlink(imagePath, function (err) {
         if (err) throw err

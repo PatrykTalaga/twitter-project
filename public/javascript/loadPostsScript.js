@@ -1,35 +1,21 @@
-/* const loadPostURL = `http://localhost:3000/API/loadPosts/3/1/{}` */
 const loadPostURL = `http://localhost:3000/API/loadPosts`
-/* const limit = 5
-const skip = 0
-const filter = ""
-const loadPostURLParams = loadPostURL + `/${limit}/${skip}/{}${filter}}`
-console.log(loadPostURLParams)
-console.log('wololo') */
-loadPosts(2, 1)
-   
+
+//variables//
+const initialPostsNumber = 2
+loadPosts(initialPostsNumber, 0)
+let postsCounter = initialPostsNumber
+
+//script//
 const loadPostsBtn = document.querySelector('#loadPostsBtn')
 loadPostsBtn.addEventListener('click', async (e) => {
     e.preventDefault()
-
-    loadPosts()
+    loadPosts(2, postsCounter)
 })
 
-/////////////////WOLOLO BTN
-const img = document.querySelector('.img')
-
-img.addEventListener('click', (e) => { //append textarea
-    e.preventDefault()
-    const textArea = document.querySelector('.text')
-    console.log('click')
-    let text = textArea.value
-    console.log(text)
-    textArea.value = `${text} Wololo!`
-})
-/////////////////WOLOLO BTN
 
 
-//functions
+//functions//
+//access data from cookie
 function getCookieValue(name){
     const regex = new RegExp(`(^| )${name}=([^;]+)`)
     const match = document.cookie.match(regex)
@@ -38,16 +24,13 @@ function getCookieValue(name){
     }
 }
 
+//Send API request for posts and render them as HTML elements
 async function loadPosts(limit=5, skip=0, filter=""){
-
     const loadPostURLParams = loadPostURL + `/${limit}/${skip}/{${filter}}`
-    console.log(loadPostURLParams)
     try{
         let  posts = await fetch(loadPostURLParams)
         posts = await posts.json()
-        /* console.log('posts: ' + posts[1].user +' : '+ typeof(posts)) */
         posts.forEach(post => {
-            /* console.log('post: ' + post.user +' : '+ typeof(post)) */
             let postBox = document.querySelector('#post-box')
 
             let postDiv = document.createElement('div')
@@ -62,13 +45,14 @@ async function loadPosts(limit=5, skip=0, filter=""){
 
             postDiv.append(headerP, postText)
 
-            /* console.log('post.postImagePath:  ' + post.postImagePath +' : '+ typeof(post.postImagePath)) */
+            //if there is image path in database render the image
             if(post.postImagePath != null){
                 let postImg = document.createElement('img')
                 postImg.setAttribute('src', post.postImagePath)
                 postDiv.append(postImg)
             }
 
+            //if post belongs to the current user create edit and delete buttons
             const userId = getCookieValue('userId')
             if(userId == post.userId){
                 let ctrlDiv = document.createElement('div')
