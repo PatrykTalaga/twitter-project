@@ -68,7 +68,7 @@ router.post('/newPost', authenticateToken, upload.single('postImage'), async (re
     }
     else{
         //Delete image from server if textarea was empty (there is no post to save)
-        deleteFile(imagePath)
+        if(imageName != null) deleteFile(imagePath)
         return res.redirect("/home")
     }
 })
