@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 const RefreshToken = require('../models/refreshToken')
 
 //variables//
-const accessTime = '2s'
+const accessTime = '15min'
 const refreshTime = '3h'
 
 //router//

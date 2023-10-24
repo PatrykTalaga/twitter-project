@@ -1,13 +1,17 @@
 :root{
-    --background-color: white;
+    --background-color: rgba(0, 0, 0, 0.74);
+    --post-background-color: rgba(0, 0, 0, 0.137);
     --font-size: 1.25rem;
-    --font-color: black;
+    --font-color: white;
     --font-color-btn: white;
     --color: rgba(0, 102, 255, 0.932);
+    
 }
 
 /* Default DOM elelement */
 body{
+    background-color: var( --background-color);
+    color: var(--font-color);
     font-family: 'Open Sans', sans-serif;
     font-size: var(--font-size);
     width: 100vw;
@@ -20,7 +24,8 @@ body{
 button{
     padding: 10px 15px;
     margin: 5px;
-    border: solid 2px var(--font-color);
+    border: solid 1px var(--background-color);
+    box-shadow: 0 0 1px var(--font-color);
     border-radius: 50px;
     text-shadow: 0 0 1px black;
     font-size: var(--font-size);
@@ -99,7 +104,8 @@ a{
 }
 
 .post:hover{
-    background-color: gainsboro;
+    /* background-color: rgb(88, 88, 88); */
+    background-color: var(--post-background-color);
     transition: .1s linear;
 }
 
