@@ -114,6 +114,17 @@ a{
     margin: 5px;
 }
 
-#home{
+.home{
+    display: flex;
     width: 90%;
+}
+
+.main-home{
+    width: 70%;
+    margin-top: 25px;
+}
+
+.sidebar-home{
+    width: 30%;
+    margin-top: 25px;
 }

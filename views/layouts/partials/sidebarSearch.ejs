@@ -1,0 +1,12 @@
+<div class="sidebar-home">
+    <%- include('./searchErrorMessage.ejs') %>
+    <form action="/home/search" method="POST">
+        <label for="searchBar">Search</label>
+        <input type="text" name="search" id="searchBar" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div>
+        <h3>New Posts</h3>
+        <p>Placeholder</p>
+    </div>
+</div>

@@ -8,6 +8,8 @@ const path = require('path')
 const multer = require('multer')
 //modules//
 const Post = require('../models/post')
+//variables//
+const searchLimit = 25
 
 //middleware//
 const authenticateToken = require('../middleware/authenticate')
@@ -119,6 +121,40 @@ router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
         res.redirect('/home')
     }catch(err){
         console.error(err)
+    }
+})
+
+router.post('/search/', authenticateToken, async (req, res) => {
+    try{
+        const searchParameters = req.body.search
+        
+        if((await Post.find({ user: searchParameters })).length == 0){
+            //search for posts
+            const posts = await Post.find({ postText: { "$regex": searchParameters, "$options": "i" } }).limit(searchLimit)
+            if(posts.length != 0){
+                res.render('searchResults.ejs', 
+                {
+                    posts: posts,
+                    userId : req.user._id,
+                    searchParameters: searchParameters
+                })
+            }else{
+                res.render('home.ejs', { searchError: 'Nothing found'})
+            }
+        }else{
+            //search for users
+            const posts = await Post.find({ user: searchParameters }).limit(searchLimit)
+            res.render('searchResults.ejs', 
+                {
+                    posts: posts,
+                    userId : req.user._id,
+                    searchParameters: searchParameters
+                })
+        }
+
+    }catch(err){
+        console.error(err)
+        res.render('home.ejs', { searchError: 'Server error'})
     }
 })
 
