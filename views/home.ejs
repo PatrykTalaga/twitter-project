@@ -1,19 +1,21 @@
-<div id="home">
-    <div class="new-post">
-        <div class="profile-img"><p>img</p></div>
-        <div>
-            <form action="/home/newPost" method="POST" enctype="multipart/form-data">
-                <textarea name="newPost" class="text" cols="80" rows="10" placeholder="What is happening"></textarea>
-                <input type="file" name="postImage"> 
-                <div class="btn-box">
-                    <button type="submit" class="post-btn">Post</button>
-                </div>
-            </form>
+<div class="home">
+    <div class="main-home">
+        <div class="new-post">
+            <div class="profile-img"><p>img</p></div>
+            <div>
+                <form action="/home/newPost" method="POST" enctype="multipart/form-data">
+                    <textarea name="newPost" class="text" cols="80" rows="10" placeholder="What is happening"></textarea>
+                    <input type="file" name="postImage"> 
+                    <div class="btn-box">
+                        <button type="submit" class="post-btn">Post</button>
+                    </div>
+                </form>
+            </div>
         </div>
+        <div id="post-box"></div>
+        <button id="loadPostsBtn">More posts</button>
     </div>
-    <div id="post-box"></div>
-    <button id="loadPostsBtn">More posts</button>
+    <%- include('./layouts/partials/sidebarSearch') %>
 </div>
 
-<script src="javascript/settingsScript.js" defer></script>
-<script src="javascript/loadPostsScript.js" defer></script>
+<script src="/javascript/loadPostsScript.js" defer></script>
