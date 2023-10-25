@@ -37,8 +37,14 @@ async function loadPosts(limit=5, skip=0, filter=""){
             postDiv.classList.add('post')
 
             let headerP = document.createElement('p')
+            //<span class="grey-text"><%= " @" + post.userId %>
+
             headerP.classList.add('post-header')
             headerP.innerText = post.user
+            let headerSpan = document.createElement('span')
+            headerSpan.classList.add("grey-text")
+            headerSpan.innerText = '@' + post.userId
+            headerP.append(headerSpan)
 
             let postText = document.createElement('p')
             postText.innerText = post.postText
