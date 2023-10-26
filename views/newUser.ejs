@@ -1,18 +1,18 @@
 <%- include('./layouts/partials/genericErrorMessage.ejs') %>
 
-<form action="/newUser" method="POST">
+<form action="/newUser" method="POST" class="login-input">
     <div>
         <div class="login-field">
             <label>E-mail: </label>
-            <input type="email" name="email" required placeholder="alf123@email.com" value="<%= locals.email %>">
+            <input type="email" name="email" required placeholder="alf123@email.com" class="text-imput input-margin" value="<%= locals.email %>">
         </div>
         <div class="login-field">
             <label>Username: </label>
-            <input type="text" name="username" required placeholder="Username" value="<%= locals.username %>">         
+            <input type="text" name="username" required placeholder="Username" class="text-imput input-margin" value="<%= locals.username %>">         
         </div>
         <div class="login-field">
             <label>Password: </label>
-            <input type="password" name="password" required placeholder="Password" value="<%= locals.password %>">
+            <input type="password" name="password" required placeholder="Password" class="text-imput input-margin" value="<%= locals.password %>">
         </div>
         <button type="submit">Submit</button>
     </div>

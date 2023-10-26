@@ -1,15 +1,16 @@
 const loadPostURL = `http://localhost:3000/API/loadPosts`
 
 //variables//
-const initialPostsNumber = 2
-loadPosts(initialPostsNumber, 0)
+const initialPostsNumber = 5
 let postsCounter = initialPostsNumber
 
 //script//
+loadPosts(initialPostsNumber)
 const loadPostsBtn = document.querySelector('#loadPostsBtn')
 loadPostsBtn.addEventListener('click', async (e) => {
     e.preventDefault()
     loadPosts(2, postsCounter)
+    postsCounter = postsCounter + 2
 })
 
 
@@ -62,6 +63,7 @@ async function loadPosts(limit=5, skip=0, filter=""){
             const userId = getCookieValue('userId')
             if(userId == post.userId){
                 let ctrlDiv = document.createElement('div')
+                ctrlDiv.classList.add('ctrlDiv')
 
                 let editForm = document.createElement('form')
                 editForm.setAttribute('action', `/home/editPost/${post._id}`)

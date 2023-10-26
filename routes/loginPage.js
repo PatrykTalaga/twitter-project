@@ -99,7 +99,8 @@ router.route('/newUser')
 //****Start of: Auto-Login - there are no checks because this data was just added to database**********//
                 const jUser = user.toJSON()
                 const accessToken = jwt.sign(jUser, process.env.ACCESS_TOKEN_JWT)
-                res.cookie("accessToken", accessToken).redirect('/home')
+                const refreshToken = jwt.sign(jUser, process.env.REFRESH_TOKEN_JWT, {expiresIn: refreshTime})
+                res.cookie("accessToken", accessToken, {overwrite: true}).cookie("refreshToken", refreshToken, {overwrite: true}).cookie("userId", jUser._id.toJSON()).redirect('/home')
 //******End of: Auto-Login - there are no checks because this data was just added to database**********//
                 }catch(err){ //save to database
                     console.error(err)
