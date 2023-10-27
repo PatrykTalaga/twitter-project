@@ -1,20 +1,19 @@
 :root{
-    --background-color: rgba(0, 0, 0, 0.74);
-    --post-background-color: rgba(0, 0, 0, 0.137);
+    --background-color: white;
+    --post-background-color: rgba(168, 168, 168, 0.137);
     --font-size: 1.25rem;
-    --font-color: white;
+    --font-color: black;
     --font-color-btn: white;
     --color: rgba(0, 102, 255, 0.932);
     
 }
 
-/* Default DOM elelement */
+/* default DOM elements */
 body{
     background-color: var( --background-color);
     color: var(--font-color);
     font-family: 'Open Sans', sans-serif;
     font-size: var(--font-size);
-    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: top;
@@ -69,6 +68,21 @@ a{
     font-size: medium;
     color: var(--font-color);
 }
+
+input:invalid{
+    color: red;
+}
+
+a h3{
+    margin: 5px;
+    padding: 0;
+}
+
+a h3:hover{
+    text-shadow: 0 0 2px var(--color);
+}
+
+/* layout */
 .left-side-bar{
     width: 20%;
     border-right: 1px solid var(--color);
@@ -88,6 +102,29 @@ a{
     justify-content: top;
 }
 
+.home{
+    display: flex;
+    width: 97%;
+}
+
+.main-home{
+    width: 70%;
+    margin-top: 25px;
+}
+
+.sidebar-home{
+    width: 30%;
+    margin-top: 25px;
+}
+
+.bottom-box{
+    padding: 0 0 100px 0;
+}
+.logout{
+    padding-top: 40px;
+}
+
+/* postts */
 .new-post{
     width: 90%;
     font-family: 'Arimo', sans-serif;
@@ -142,59 +179,17 @@ a{
     transition: .1s linear;
 }
 
-.profile-img{
-    padding: 5px;
-    margin: 5px;
-}
-
-.home{
-    display: flex;
-    width: 97%;
-}
-
-.main-home{
-    width: 70%;
-    margin-top: 25px;
-}
-
-.sidebar-home{
-    width: 30%;
-    margin-top: 25px;
-}
-
-.bottom-box{
-    padding: 0 0 100px 0;
-}
-.logout{
-    padding-top: 40px;
-}
-
 .ctrlDiv{
     display: flex;
     padding: 15px 0 2px 2px;
 }
-
-
-
-.text-imput{
-    padding: 5px 15px;
-    background-color: var(--background-color);
-    border: 1px solid var(--color);
-    box-shadow: 0 0 2px var(--color);
-    color: var(--font-color);
-    
-}
-
-input:invalid{
-    color: red;
-}
-
 
 .file-upload{
     padding: 2px 10px;
 }
 
 
+/* settings page */
 .form-settings{
     width: 95%;
     display: flex;
@@ -230,13 +225,52 @@ input:invalid{
     padding: 0 5px;
 }
 
-a h3{
-    margin: 5px;
-    padding: 0;
+/* login and new user */
+.single-page{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    translate: -50% -50%;
+    padding: 0 25px 50px 25px;
+    border: 1px solid var(--color);
+    box-shadow: 0 0 2px var(--color);
 }
 
-a h3:hover{
-    text-shadow: 0 0 2px var(--color);
+.title{
+    margin: auto;
+    text-align: center;
+}
+
+.new-user-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.text-input{
+    padding: 5px 15px;
+    background-color: var(--background-color);
+    border: 1px solid var(--color);
+    box-shadow: 0 0 2px var(--color);
+    color: var(--font-color);   
+}
+
+.width-70{
+    width: 75%;
+    display: flex;
+    justify-content: right;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.margin-top-15px{
+    margin-top: 10px;
 }
 
 .login-input{

@@ -18,13 +18,14 @@ const refreshTime = '3h'
 const router = express.Router()
 router.route('/')
     .get((req, res) => {
-        res.render('loginPage.ejs')
+        res.render('loginPage.ejs', {layout: false})
     })
     .post(async (req, res) => {
         const user = await User.findOne({ username : req.body.username})
         if(user == null){
             console.log('Username is incorrect')
             return res.status(400).render('loginPage.ejs', {
+                layout: false,
                 errorMessage: 'Username is incorrect',
                 username: req.body.username }
             )
@@ -51,6 +52,7 @@ router.route('/')
             }
             else{
                 return res.status(400).render('loginPage.ejs', {
+                    layout: false,
                     errorMessage: 'Password is incorrect',
                     username: req.body.username })
             }
@@ -64,12 +66,14 @@ router.route('/')
 
 router.route('/newUser')
     .get((req, res) => {
-        res.render('newUser.ejs')
+        res.render('newUser.ejs', {layout: false})
     })
     .post(async (req, res) => {
+        
         //Check if username is already in database
         if(await User.countDocuments({username: req.body.username}) !== 0){
             return res.status(400).render('newUser.ejs', {
+                layout: false,
                 errorMessage: 'This username is already registered',
                 username: req.body.username,
                 password: req.body.password,
@@ -78,6 +82,7 @@ router.route('/newUser')
         //Check if email is already in database
         if(await User.countDocuments({email: req.body.email}) !== 0) {
             return res.status(400).render('newUser.ejs', {
+                layout: false,
                 errorMessage: 'This e-mail is already registered',
                 username: req.body.username,
                 password: req.body.password,

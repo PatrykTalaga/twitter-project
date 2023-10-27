@@ -1,19 +1,38 @@
-<%- include('./layouts/partials/genericErrorMessage.ejs') %>
-
-<form action="/newUser" method="POST" class="login-input">
-    <div>
-        <div class="login-field">
-            <label>E-mail: </label>
-            <input type="email" name="email" required placeholder="alf123@email.com" class="text-imput input-margin" value="<%= locals.email %>">
-        </div>
-        <div class="login-field">
-            <label>Username: </label>
-            <input type="text" name="username" required placeholder="Username" class="text-imput input-margin" value="<%= locals.username %>">         
-        </div>
-        <div class="login-field">
-            <label>Password: </label>
-            <input type="password" name="password" required placeholder="Password" class="text-imput input-margin" value="<%= locals.password %>">
-        </div>
-        <button type="submit">Submit</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500&display=swap" rel="stylesheet">
+    <title>Not Twitter</title>
+</head>
+<body>
+    
+    <div class="single-page">
+        <%- include('./layouts/partials/genericErrorMessage.ejs') %>
+        <form action="/newUser" method="POST" class="new-user-form">
+                <div class="login-field width-70">
+                    <label>E-mail: </label>
+                    <input type="email" name="email" required placeholder="alf123@email.com" class="text-input input-margin" value="<%= locals.email %>">
+                </div>
+                <div class="login-field width-70">
+                    <label>Username: </label>
+                    <input type="text" name="username" required placeholder="Username" class="text-input input-margin" value="<%= locals.username %>">         
+                </div>
+                <div class="login-field width-70">
+                    <label>Password: </label>
+                    <input type="password" name="password" required placeholder="Password" class="text-input input-margin" value="<%= locals.password %>">
+                </div>
+                <div class="width-70"><button type="submit">Submit</button></div>
+                
+        </form>
     </div>
-</form>
+</body>
+</html>
+
+

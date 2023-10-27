@@ -1,12 +1,34 @@
-<%- include('./layouts/partials/genericErrorMessage.ejs') %>
-<div class="main">
-    <form action="/" method="POST" class="login-input">
-        <input type="text" name="username" required placeholder="Username" class="text-imput input-margin"  value="<%= locals.username %>" >
-        <input type="password" name="password" required  class="text-imput input-margin" placeholder="password">
-        <button type="submit">Log In</button>
-    </form>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500&display=swap" rel="stylesheet">
+    <title>Not Twitter</title>
+</head>
+<body>
     
-    <form action="/newUser" method="get">
-        <button type="submit">Create new account</button>
-    </form>
-</div>
+    <div class="single-page">
+        <div class="title"><h1>Not Twitter</h1></div>
+        <%- include('./layouts/partials/genericErrorMessage.ejs') %>
+        <form action="/" method="POST" class="login-input login-form">
+            <input type="text" name="username" required placeholder="Username" class="text-imput input-margin"  value="<%= locals.username %>" >
+            <input type="password" name="password" required  class="text-imput input-margin" placeholder="password">
+            <button type="submit" class="margin-top-15px">Log In</button>
+        </form>
+
+        <form action="/newUser" method="get">
+            <button type="submit">Create new account</button>
+        </form>
+    </div>
+</body>
+</html>
