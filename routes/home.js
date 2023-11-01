@@ -117,6 +117,10 @@ router.route('/editPost/:id')
 router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
     try{
         const id = req.params.id
+        //delete image
+        let post = await Post.findOne({ _id: id })
+        if(post.imagePath != null) deleteFile(post.imagePath)
+        //delete post
         await Post.deleteOne({ _id: id })
         res.redirect('/home')
     }catch(err){

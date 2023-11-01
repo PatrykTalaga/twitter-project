@@ -11,8 +11,8 @@ router.post('/', authenticateToken, async (req, res) => {
         await RefreshToken.deleteOne({ user: userName })
         console.log('deleted: ' + userName)
         //clear cookies from browser as well
-        res.clearCookie('accessToken');
-        res.clearCookie('refreshToken');
+        res.clearCookie('accessToken')
+        res.clearCookie('refreshToken')
         res.redirect('/')
     }catch(err){
         console.error(err)

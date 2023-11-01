@@ -118,4 +118,4 @@ router.route('/newUser')
 
 //exports//
 module.exports = router
-module.exports.accessTime = accessTime
+module.exports.accessTime = accessTime //export variable

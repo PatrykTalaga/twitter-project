@@ -1,7 +1,6 @@
 <div class="home">
     <div class="main-home">
         <div class="new-post">
-            <div class="profile-img"><p>img</p></div>
             <div>
                 <form action="/home/editPost/<%= post._id %>" method="POST" enctype="multipart/form-data">
                     <textarea name="editPost" class="text" cols="80" rows="10"><%= post.postText %></textarea>

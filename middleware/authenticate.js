@@ -11,7 +11,7 @@ async function  authenticateToken (req, res, next){
     jwt.verify(token, process.env.ACCESS_TOKEN_JWT, async (err, user) => {
         if(err){
             //access token expired, check if refresh token exists, is valid and
-            //is in the database(/there was no log out)
+            //is in the database
             const refreshToken = req.cookies.refreshToken
             if(refreshToken == null) return res.sendStatus('401')
             const userDb = await User.findOne({_id: req.cookies.userId})

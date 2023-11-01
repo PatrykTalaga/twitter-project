@@ -33,7 +33,6 @@ async function applySettings(){
                 background = 'white'
                 postBackground = 'rgba(168, 168, 168, 0.137)'
                 fontColor = 'black'
-
                 break
             case 'dim':
                 background = 'rgba(0, 0, 0, 0.74)'
